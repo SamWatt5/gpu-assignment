@@ -15,7 +15,7 @@ include_directories(include)
 # Copy everything in src/shaders into the same flat output directory as the
 # executable, so LoadShader() can find shaders by filename at runtime.
 function(copy_shaders TARGET)
-  file(GLOB SHADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/shaders/*")
+  file(GLOB SHADER_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/shaders/*")
   if(SHADER_FILES)
     # Use an OUTPUT-based command (stamp file) rather than POST_BUILD so the
     # copy re-runs whenever a shader's mtime changes, even if no .cpp changed

@@ -21,6 +21,7 @@ public:
   void drawUfo(std::stack<mat4> &model, GLuint modelID, GLuint emissiveID,
                int drawmode);
   float rotationSpeed;
+  void setRotationSpeed(GLfloat newSpinSpeed);
 
 private:
   Sphere body;

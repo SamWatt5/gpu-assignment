@@ -72,3 +72,7 @@ void Ufo::drawUfo(std::stack<mat4> &model, GLuint modelID, GLuint emissiveID,
   }
   model.pop();
 }
+
+void Ufo::setRotationSpeed(GLfloat newSpinSpeed) {
+  rotationSpeed = newSpinSpeed;
+}

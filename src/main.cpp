@@ -100,6 +100,17 @@ void do_key_checks() {
     z += 0.02f;
   if (keys['W'])
     z -= 0.02f;
+  if (keys['1'])
+    ufo.setRotationSpeed(0.f);
+  if (keys['2'])
+    ufo.setRotationSpeed(1.f);
+  if (keys['3'])
+    ufo.setRotationSpeed(2.f);
+  if (keys['4'])
+    ufo.setRotationSpeed(4.f);
+  if (keys['5'])
+    ufo.setRotationSpeed(6.f);
+
   if (keys[GLFW_KEY_LEFT_CONTROL] or keys[GLFW_KEY_RIGHT_SHIFT])
     y -= 0.005f;
   if (keys[GLFW_KEY_LEFT_SHIFT])
@@ -108,9 +119,6 @@ void do_key_checks() {
     camera_y += 0.05f;
   if (keys[GLFW_KEY_DOWN])
     camera_y -= 0.05f;
-  // Keep the eye-to-origin vector from lining up with the (0,1,0) up vector,
-  // which makes lookAt's internal cross products degenerate and the view flip
-  camera_y = glm::clamp(camera_y, -3.9f, 3.9f);
   if (keys[GLFW_KEY_LEFT])
     camera_x -= 0.05f;
   if (keys[GLFW_KEY_RIGHT])
@@ -143,7 +151,7 @@ void init(GLWrapper *glw) {
   camera_facing_z = 0;
   camera_x = 0;
   camera_y = 0;
-  camera_z = 4;
+  camera_z = 5;
   light_pos_x = 1;
   light_pos_y = 1;
   light_pos_z = -1;
@@ -160,7 +168,7 @@ void init(GLWrapper *glw) {
 
   /* Load and build the vertex and fragment shaders */
   try {
-    program = glw->LoadShader("basic.vert", "basic.frag");
+    program = glw->LoadShader("phong.vert", "phong.frag");
   } catch (exception &e) {
     cout << "Caught exception: " << e.what() << endl;
     cin.ignore();
@@ -192,6 +200,7 @@ loop in the wrapper class because we registered display as a callback function
 */
 void display() {
   do_key_checks();
+  ufoSpinSpeed = ufo.rotationSpeed;
 
   /* Define the background colour */
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -216,9 +225,8 @@ void display() {
   vec3 beam_light_pos = vec3(x, y, z);
   vec3 beam_light_dir = vec3(0, -1, 0);
 
-  const float radius = 5.0f;
-  float camX = sin(camera_x) * radius;
-  float camZ = cos(camera_x) * radius;
+  float camX = sin(camera_x) * camera_z;
+  float camZ = cos(camera_x) * camera_z;
   // Camera matrix
   mat4 view =
       lookAt(vec3(camX, camera_y,
