@@ -54,8 +54,8 @@ GLfloat camera_x, camera_y, camera_z;
 
 GLfloat light_pos_x, light_pos_y, light_pos_z;
 
-GLuint drawmode; // Defines drawing mode of sphere as points, lines or filled
-                 // polygons
+GLuint drawmode;          // Defines drawing mode of sphere as points, lines or filled
+                          // polygons
 GLuint numlats, numlongs; // Define the resolution of the sphere object
 
 /* Uniforms*/
@@ -91,7 +91,8 @@ using namespace glm;
 
 // store dict of keys currently being pressed/held - this means you can hold
 // multiple buttons at once
-void do_key_checks() {
+void do_key_checks()
+{
   if (keys['A'])
     x -= 0.02f;
   if (keys['D'])
@@ -133,7 +134,8 @@ void do_key_checks() {
 This function is called before entering the main rendering loop.
 Use it for all your initialisation stuff
 */
-void init(GLWrapper *glw) {
+void init(GLWrapper *glw)
+{
   /* Set the object transformation controls to their initial values */
   x = 0;
   y = 0.5f;
@@ -143,9 +145,9 @@ void init(GLWrapper *glw) {
   model_scale = 1.f;
   aspect_ratio = 1024.f / 768.f; // Initial aspect ratio from window size
                                  // (variables would be better!)
-  colourmode = 1; // 0=use colour attrib buffer, 1=colour defined in shaders
-  numlats = 80;   // Number of latitudes in our sphere
-  numlongs = 80;  // Number of longitudes in our sphere
+  colourmode = 1;                // 0=use colour attrib buffer, 1=colour defined in shaders
+  numlats = 80;                  // Number of latitudes in our sphere
+  numlongs = 80;                 // Number of longitudes in our sphere
   camera_facing_x = 0;
   camera_facing_y = 0;
   camera_facing_z = 0;
@@ -167,9 +169,12 @@ void init(GLWrapper *glw) {
   glBindVertexArray(vao);
 
   /* Load and build the vertex and fragment shaders */
-  try {
+  try
+  {
     program = glw->LoadShader("phong.vert", "phong.frag");
-  } catch (exception &e) {
+  }
+  catch (exception &e)
+  {
     cout << "Caught exception: " << e.what() << endl;
     cin.ignore();
     exit(0);
@@ -198,7 +203,8 @@ void init(GLWrapper *glw) {
 /* Called to update the display. Note that this function is called in the event
 loop in the wrapper class because we registered display as a callback function
 */
-void display() {
+void display()
+{
   do_key_checks();
   ufoSpinSpeed = ufo.rotationSpeed;
 
@@ -235,7 +241,7 @@ void display() {
                   camZ), // Camera is at (camX, camY, camZ), in World Space
              vec3(camera_facing_x, camera_facing_y,
                   camera_facing_z), // and looks at the origin
-             vec3(0, 1, 0) // Head is up (set to 0,-1,0 to look upside-down)
+             vec3(0, 1, 0)          // Head is up (set to 0,-1,0 to look upside-down)
       );
 
   // Send our projection and view uniforms to the currently bound shader
@@ -346,7 +352,8 @@ void display() {
 
 /* Called whenever the window is resized. The new window size is given, in
  * pixels. */
-static void reshape(GLFWwindow *window, int w, int h) {
+static void reshape(GLFWwindow *window, int w, int h)
+{
   glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 
   // Store aspect ratio to use for our perspective projection
@@ -355,7 +362,8 @@ static void reshape(GLFWwindow *window, int w, int h) {
 
 /* change view angle, exit upon ESC */
 static void keyCallback(GLFWwindow *window, int key, int s, int action,
-                        int mods) {
+                        int mods)
+{
   /* Enable this call if you want to disable key responses to a held down key*/
   // if (action != GLFW_PRESS) return;
 
@@ -373,7 +381,8 @@ static void keyCallback(GLFWwindow *window, int key, int s, int action,
     colourmode = !colourmode;
 
   /* Cycle between drawing vertices, mesh and filled polygons */
-  if (key == ',' && action != GLFW_PRESS) {
+  if (key == ',' && action != GLFW_PRESS)
+  {
     drawmode++;
     if (drawmode > 2)
       drawmode = 0;
@@ -381,13 +390,15 @@ static void keyCallback(GLFWwindow *window, int key, int s, int action,
 }
 
 /* Entry point of program */
-int main(int argc, char *argv[]) {
-  GLWrapper *glw = new GLWrapper(1024, 768, "Lab3 start example");
+int main(int argc, char *argv[])
+{
+  GLWrapper *glw = new GLWrapper(1024, 768, "Ufo Abducting a cow!!!");
   ;
 
   // glad: load all OpenGL function pointers
   // ---------------------------------------
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+  {
     cout << "Failed to initialize GLAD. Exiting." << endl;
     return -1;
   }

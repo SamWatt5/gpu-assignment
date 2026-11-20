@@ -17,7 +17,8 @@
 using namespace std;
 
 /* Constructor for wrapper object */
-GLWrapper::GLWrapper(int width, int height, const char *title) {
+GLWrapper::GLWrapper(int width, int height, const char *title)
+{
 
   this->width = width;
   this->height = height;
@@ -27,7 +28,8 @@ GLWrapper::GLWrapper(int width, int height, const char *title) {
   this->renderer = NULL;
 
   /* Initialise GLFW and exit if it fails */
-  if (!glfwInit()) {
+  if (!glfwInit())
+  {
     cout << "Failed to initialize GLFW." << endl;
     exit(EXIT_FAILURE);
   }
@@ -45,7 +47,8 @@ GLWrapper::GLWrapper(int width, int height, const char *title) {
 #endif
 
   window = glfwCreateWindow(width, height, title, 0, 0);
-  if (!window) {
+  if (!window)
+  {
     cout << "Could not open GLFW window." << endl;
     glfwTerminate();
     exit(EXIT_FAILURE);
@@ -57,14 +60,15 @@ GLWrapper::GLWrapper(int width, int height, const char *title) {
   /* Initialise GLLoad library. You must have obtained a current OpenGL */
   // glad: load all OpenGL function pointers
   // ---------------------------------------
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+  {
     std::cout << "Failed to initialize GLAD - exiting" << std::endl;
     glfwTerminate();
     return;
   }
 
   /* Can set the Window title at a later time if you wish*/
-  glfwSetWindowTitle(window, "Hello Graphics (again)");
+  //  glfwSetWindowTitle(window, "Hello Graphics (again)");
 
   glfwSetInputMode(window, GLFW_STICKY_KEYS, true);
 
@@ -81,7 +85,8 @@ GLFWwindow *GLWrapper::getWindow() { return window; }
 /*
  * Print OpenGL Version details
  */
-void GLWrapper::DisplayVersion() {
+void GLWrapper::DisplayVersion()
+{
   /* One way to get OpenGL version*/
   int major, minor;
   glGetIntegerv(GL_MAJOR_VERSION, &major);
@@ -98,9 +103,11 @@ void GLWrapper::DisplayVersion() {
 GLFW_Main function normally starts the windows system, calls any init routines
 and then starts the event loop which runs until the program ends
 */
-int GLWrapper::eventLoop() {
+int GLWrapper::eventLoop()
+{
   // Main loop
-  while (!glfwWindowShouldClose(window)) {
+  while (!glfwWindowShouldClose(window))
+  {
     // Call function to draw your graphics
     renderer();
 
@@ -115,7 +122,8 @@ int GLWrapper::eventLoop() {
 
 /* Register an error callback function */
 void GLWrapper::setErrorCallback(void (*func)(int error,
-                                              const char *description)) {
+                                              const char *description))
+{
   glfwSetErrorCallback(func);
 }
 
@@ -124,19 +132,22 @@ void GLWrapper::setRenderer(void (*func)()) { this->renderer = func; }
 
 /* Register a callback that runs after the window gets resized */
 void GLWrapper::setReshapeCallback(void (*func)(GLFWwindow *window, int w,
-                                                int h)) {
+                                                int h))
+{
   glfwSetFramebufferSizeCallback(window, func);
 }
 
 /* Register a callback to respond to keyboard events */
 void GLWrapper::setKeyCallback(void (*func)(GLFWwindow *window, int key,
                                             int scancode, int action,
-                                            int mods)) {
+                                            int mods))
+{
   glfwSetKeyCallback(window, func);
 }
 
 /* Build shaders from strings containing shader source code */
-GLuint GLWrapper::BuildShader(GLenum eShaderType, const string &shaderText) {
+GLuint GLWrapper::BuildShader(GLenum eShaderType, const string &shaderText)
+{
   GLuint shader = glCreateShader(eShaderType);
   const char *strFileData = shaderText.c_str();
   glShaderSource(shader, 1, &strFileData, NULL);
@@ -145,7 +156,8 @@ GLuint GLWrapper::BuildShader(GLenum eShaderType, const string &shaderText) {
 
   GLint status;
   glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-  if (status == GL_FALSE) {
+  if (status == GL_FALSE)
+  {
     // Output the compile errors
 
     GLint infoLogLength;
@@ -155,7 +167,8 @@ GLuint GLWrapper::BuildShader(GLenum eShaderType, const string &shaderText) {
     glGetShaderInfoLog(shader, infoLogLength, NULL, strInfoLog);
 
     const char *strShaderType = NULL;
-    switch (eShaderType) {
+    switch (eShaderType)
+    {
     case GL_VERTEX_SHADER:
       strShaderType = "vertex";
       break;
@@ -178,18 +191,21 @@ GLuint GLWrapper::BuildShader(GLenum eShaderType, const string &shaderText) {
 }
 
 /* Read a text file into a string*/
-string GLWrapper::readFile(const char *filePath) {
+string GLWrapper::readFile(const char *filePath)
+{
   string content;
   ifstream fileStream(filePath, ios::in);
 
-  if (!fileStream.is_open()) {
+  if (!fileStream.is_open())
+  {
     cerr << "Could not read file " << filePath << ". File does not exist."
          << endl;
     return "";
   }
 
   string line = "";
-  while (!fileStream.eof()) {
+  while (!fileStream.eof())
+  {
     getline(fileStream, line);
     content.append(line + "\n");
   }
@@ -200,7 +216,8 @@ string GLWrapper::readFile(const char *filePath) {
 
 /* Load vertex and fragment shader and return the compiled program */
 GLuint GLWrapper::LoadShader(const char *vertex_path,
-                             const char *fragment_path) {
+                             const char *fragment_path)
+{
   GLuint vertShader, fragShader;
 
   // Read shaders
@@ -233,14 +250,18 @@ GLuint GLWrapper::LoadShader(const char *vertex_path,
 
 /* Load vertex and fragment shader and return the compiled program */
 GLuint GLWrapper::BuildShaderProgram(string vertShaderStr,
-                                     string fragShaderStr) {
+                                     string fragShaderStr)
+{
   GLuint vertShader, fragShader;
   GLint result = GL_FALSE;
 
-  try {
+  try
+  {
     vertShader = BuildShader(GL_VERTEX_SHADER, vertShaderStr);
     fragShader = BuildShader(GL_FRAGMENT_SHADER, fragShaderStr);
-  } catch (exception &e) {
+  }
+  catch (exception &e)
+  {
     cout << "Exception: " << e.what() << endl;
     throw std::runtime_error(
         "BuildShaderProgram() Build shader failure. Abandoning");
@@ -253,7 +274,8 @@ GLuint GLWrapper::BuildShaderProgram(string vertShaderStr,
 
   GLint status;
   glGetProgramiv(program, GL_LINK_STATUS, &status);
-  if (status == GL_FALSE) {
+  if (status == GL_FALSE)
+  {
 
     GLint infoLogLength;
     glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLength);
