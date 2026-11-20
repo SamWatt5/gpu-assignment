@@ -1,3 +1,5 @@
+// Author: Sam Watts
+// Source file for cow object (for part 2 i will make this an actual cow model)
 #include "cow.h"
 
 Cow::Cow() {}

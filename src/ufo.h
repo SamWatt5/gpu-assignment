@@ -1,3 +1,5 @@
+// Author: Sam Watts
+// Header file for ufo object
 #pragma once
 
 #include "glm/gtc/matrix_transform.hpp"

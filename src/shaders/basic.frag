@@ -1,3 +1,5 @@
+// Author: Sam Watts
+// Fragment shader for CS51012 assignment doing phong lighting
 #version 420
 
 in vec3 N;
@@ -35,6 +37,9 @@ void main() {
 
   vec4 ambient = diffuse_colour * 0.1;
 
+  // to make sure transparentness works, rgb addition is done separately, then
+  // the final colour uses the diffuse colours alpha channel (passed from c++
+  // code)
   vec3 rgbColour = ambient.rgb + emissive.rgb +
                    light_calculation(light_position, N_norm, P, diffuse_colour,
                                      view, vec3(1.0)) +

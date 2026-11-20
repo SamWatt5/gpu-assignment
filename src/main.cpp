@@ -1,12 +1,11 @@
-/*
-Lab3start
-Creates a cube and a sphere
-Includes rotation, scaling, translation, view and perspective transformations,
-and is setup for you to add lighting because the objects have normals and
-colours defined for all vertices. Feel free to either use this example as a
-start to lab3 or extract bits and add to an example of your own to practice
-implementing per-vertex lighting. Iain Martin October 2018
-*/
+// Author: Sam Watts
+// Main file for CS51012 assignment, adapted from code given in the labs
+// A scene of a UFO abducting a cow on a field
+// For part 2 i will add a ufo model into the cockpit, change the cow model, add
+// a star background, and give the moon a texture will also add some decoration
+// around the scene, such as a farmhouse, tractor, fences Will also try to give
+// the scene some fog/rain so that the beam path can be seen (this might be out
+// of scope!)
 
 /* Link to static libraries, could define these as linker inputs in the project
 settings instead if you prefer */
@@ -94,13 +93,13 @@ using namespace glm;
 // multiple buttons at once
 void do_key_checks() {
   if (keys['A'])
-    x -= 0.005f;
+    x -= 0.02f;
   if (keys['D'])
-    x += 0.005f;
+    x += 0.02f;
   if (keys['S'])
-    z += 0.05f;
+    z += 0.02f;
   if (keys['W'])
-    z -= 0.05f;
+    z -= 0.02f;
   if (keys[GLFW_KEY_LEFT_CONTROL] or keys[GLFW_KEY_RIGHT_SHIFT])
     y -= 0.005f;
   if (keys[GLFW_KEY_LEFT_SHIFT])
@@ -217,10 +216,13 @@ void display() {
   vec3 beam_light_pos = vec3(x, y, z);
   vec3 beam_light_dir = vec3(0, -1, 0);
 
+  const float radius = 5.0f;
+  float camX = sin(camera_x) * radius;
+  float camZ = cos(camera_x) * radius;
   // Camera matrix
   mat4 view =
-      lookAt(vec3(camera_x, camera_y,
-                  camera_z), // Camera is at (0,0,4), in World Space
+      lookAt(vec3(camX, camera_y,
+                  camZ), // Camera is at (0,0,4), in World Space
              vec3(camera_facing_x, camera_facing_y,
                   camera_facing_z), // and looks at the origin
              vec3(0, 1, 0) // Head is up (set to 0,-1,0 to look upside-down)

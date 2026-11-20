@@ -1,3 +1,5 @@
+// Author: Sam Watts
+// Source file for UFO object
 #include "ufo.h"
 
 Ufo::Ufo() : numLights(0), rotationSpeed(2.f) {}

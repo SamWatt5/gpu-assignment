@@ -1,6 +1,5 @@
 // Author: Sam Watts
 // Vertex shader for CS51012 assignment
-// lots of comments to help me understand whats going on (opengl is confusing!!)
 #version 420
 
 // These are the vertex attributes

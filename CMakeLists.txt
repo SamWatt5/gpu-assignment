@@ -1,3 +1,5 @@
+# CMake file for CS51012 assignment - i give full credit for this to claude!
+# (idk how this stuff works its like magic)
 cmake_minimum_required(VERSION 3.14)
 project(OpenGL_Workspace)
 
