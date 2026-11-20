@@ -225,12 +225,14 @@ void display() {
   vec3 beam_light_pos = vec3(x, y, z);
   vec3 beam_light_dir = vec3(0, -1, 0);
 
+  // i got this maths from https://learnopengl.com/Getting-started/Camera but
+  // adapted it to the project
   float camX = sin(camera_x) * camera_z;
   float camZ = cos(camera_x) * camera_z;
   // Camera matrix
   mat4 view =
       lookAt(vec3(camX, camera_y,
-                  camZ), // Camera is at (0,0,4), in World Space
+                  camZ), // Camera is at (camX, camY, camZ), in World Space
              vec3(camera_facing_x, camera_facing_y,
                   camera_facing_z), // and looks at the origin
              vec3(0, 1, 0) // Head is up (set to 0,-1,0 to look upside-down)
